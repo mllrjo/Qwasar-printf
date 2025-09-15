@@ -43,17 +43,13 @@ void food(char *fmt, ...)
 			write(1, fmt, 1);
 		} else {
  		    fmt++;
-//		    printf("%c", *fmt);
             	    switch(*fmt) {
 	               	case 's':  
                		        s = va_arg(ap, char *);
 				for(int i=0; i<strlen(s); i++) write(1, s+i, 1);
-                       		// printf("%s", s);
 	                        break;
 			case 'd': 
                         	d = va_arg(ap, int);
-                        	// printf("%d", d);
-				// integer convert to ascii
 				if(d<0) { write(1, &"-", 1); d = -d; }
 				n=0; my_string = malloc(1);
 				do {
@@ -74,20 +70,14 @@ void food(char *fmt, ...)
 				write(1, &c, 1);
                	 	        break;
 			case 'p':
-        	                // printf("%p", p);
-				// uint convert to hexadecimal
                        		p = va_arg(ap, void *);
   				unsigned long int converted = (unsigned long int) p;
-// printf("\n%lu %lu %lu\n", converted, converted/16, converted%16);
 
 				n=0; my_string = malloc(1);
 				do {
 					int i = converted%16;
-// printf("%d %c\n", i, hex_table[i]);
-// printf("%lu %lu\n", converted, converted/16);
 					converted/=16;
 					append_char_dynamic(my_string, hex_table[i]);
-// printf("%s\n", my_string);
 					n++;
 				} while(converted != 0);
 				// write(1, my_string, n);
@@ -102,7 +92,7 @@ void food(char *fmt, ...)
 	      }
 	      fmt++;
 	}
-	write(1, "\n", 1);
+//	write(1, "\n", 1);
         va_end(ap);
         va_end(ap2);
 }
@@ -122,7 +112,7 @@ int main(int argc, char **argv) {
 	c='x';
 	s = "abcdef";
 	p = malloc(t);
-	fmt = "the integer: %d, the character: %c, the string: %s, the pointer: %p";
+	fmt = "the integer: %d, the character: %c, the string: %s, the pointer: %p\n";
 	food(fmt, d, c, s, p);
 	return 0;
 
