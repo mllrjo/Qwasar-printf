@@ -43,8 +43,9 @@ int main(int argc, char **argv) {
 	char *fmt;
 	const char *message = "Hello, World!\n";
 
-	fmt = "%d";
-	foo(fmt, 5);
+	fmt = "%d %c %s";
+	foo(fmt, 5, 'x', "message");
+/*	foo(fmt, 5, "x");	returns "u" instead of "x"	*/
 
 /* 	from bing search on "c write to stdout"	*/
 	write(1, message, 14); // 1 is the file descriptor for stdout
