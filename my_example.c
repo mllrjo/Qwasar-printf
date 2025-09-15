@@ -10,9 +10,11 @@
 #include <sys/uio.h>
 
 // https://markaicode.com/how-to-append-a-character-to-string-in-c-5-proven-methods/
-char* append_char_dynamic(char *str, char ch) {
+char* append_char_dynamic(char *str, int ch) {
     size_t len = strlen(str);
+printf("len: %zu\n", len);
     char *new_str = realloc(str, len + 2);  // +1 for char, +1 for null
+printf("len: %zu\n", strlen(new_str));
 
     if (new_str == NULL) {
         return str;  // Return original if realloc fails
@@ -20,6 +22,7 @@ char* append_char_dynamic(char *str, char ch) {
 
     new_str[len] = ch;
     new_str[len + 1] = '\0';
+printf("%s\n", new_str);
 
     return new_str;
 }
@@ -34,6 +37,7 @@ void food(char *fmt, ...)
 	void *p;
 	size_t t;
 	char *my_string, c, *s;
+	char* append_char_dynamic(char *, int); 
 	/* no way in C to dynamically determine type. */
 
         va_start(ap, fmt);
@@ -51,16 +55,18 @@ void food(char *fmt, ...)
 			case 'd': 
                         	d = va_arg(ap, int);
 				if(d<0) { write(1, &"-", 1); d = -d; }
-				n=0; my_string = malloc(1);
+				n=0; my_string = malloc(1); my_string[0]='\0'; int i;
 				do {
-					int i = d%10;
+					i = d%10;
 					i+='0';
 					d/=10;
-					append_char_dynamic(my_string, i);
-					my_string[n] = i;
+					char *new_string = realloc(my_string, n + 2);  // +1 for char, +1 for null
+					my_string = new_string;
+					my_string[n]=i;
+					my_string[n+1]='\0';
 					n++;
 				} while(d != 0);
-				for(int i = n; i>0; i--) {
+				for(i = n; i>0; i--) {
 					write(1, my_string+i-1, 1);
 				}
 				free(my_string);
@@ -112,8 +118,26 @@ int main(int argc, char **argv) {
 	c='x';
 	s = "abcdef";
 	p = malloc(t);
-	fmt = "the integer: %d, the character: %c, the string: %s, the pointer: %p\n";
-	food(fmt, d, c, s, p);
+//	fmt = "the integer: %d, the character: %c, the string: %s, the pointer: %p\n";
+//	fmt = "the character: %c, the string: %s\n";
+
+//  	fmt = "the string: %s\n";
+//	food(fmt, s);
+
+//	fmt = "the character: %c\n";
+//	food(fmt, c);
+
+//  	fmt = "the character: %c the string: %s\n";
+//  	food(fmt, c, s);
+
+//  	fmt = "the integer: %d\n";
+//  	food(fmt, d);
+
+  	fmt = "the pointer: %p\n";
+  	food(fmt, p);
+
+//	food(fmt, d, c, s, p);
+
 	return 0;
 
 /*
