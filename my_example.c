@@ -78,15 +78,16 @@ void food(char *fmt, ...)
 			case 'p':
                        		p = va_arg(ap, void *);
   				unsigned long int converted = (unsigned long int) p;
-
-				n=0; my_string = malloc(1);
+				n=0; my_string = malloc(1); my_string[0]='\0';
 				do {
 					int i = converted%16;
 					converted/=16;
-					append_char_dynamic(my_string, hex_table[i]);
+					char *new_string = realloc(my_string, n + 2);  // +1 for char, +1 for null
+					my_string = new_string;
+					my_string[n]=hex_table[i];
+					my_string[n+1]='\0';
 					n++;
 				} while(converted != 0);
-				// write(1, my_string, n);
 				for(int i = n; i>0; i--) {
 					write(1, my_string+i-1, 1);
 				}
